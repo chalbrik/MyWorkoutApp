@@ -1,0 +1,15 @@
+{
+  "name": "myworkout_app",
+  "version": "1.0.0",
+  "description": "This is my workout app for tracking my fitness progress",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "chalbrik",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
