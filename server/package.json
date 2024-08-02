@@ -2,7 +2,7 @@
   "name": "myworkout_app",
   "version": "1.0.0",
   "description": "This is my workout app for tracking my fitness progress",
-  "main": "index.js",
+  "main": "server.js",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
