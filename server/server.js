@@ -1,19 +1,24 @@
 import express from "express";
+import cors from "cors";
+import bodyParser from "body-parser";
+
+import router from "./routes/router.js";
 
 const app = express();
 const port = 5000;
 
-app.get("/api", (req, res) => {
-  res.json({ users: ["userOne", "userTwo", "userThree"] });
-});
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
-// na pewno będzie GET do strony internetowej
-// GET do zalogownia
-// GET do wylogowania
-// POST do umieszczenia karty treningowej
-// DELETE do usunięcia karty treningowej
-// POST do umieszczenia ćwiczenia
-// DELETE do usunięcia ćwiczenia
+const corsOptions = {
+  origin: "*",
+  credentials: true,
+  optionSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
+
+app.use("/", router);
 
 app.listen(port, (req, res) => {
   console.log(`The app is running on port ${port}`);

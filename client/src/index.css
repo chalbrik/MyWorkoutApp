@@ -77,3 +77,100 @@ nav ul li {
 }
 
 /* Style Header - end */
+
+/* Add new workout button - start */
+
+div.workout-button-container {
+  width: 100%;
+}
+
+div.workout-button-container button {
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+
+  width: 250px;
+  height: 40px;
+
+  background-color: rgb(242, 230, 206, 0.8);
+
+  border: 3px solid rgb(242, 197, 61);
+  border-radius: 10px;
+
+  font-family: "courier-prime",
+    monospace;
+  font-weight: 700;
+  font-style: normal;
+}
+
+div.workout-button-container button:hover {
+
+  background-color: rgb(242, 197, 61, 0.8);
+  ;
+}
+
+
+/* Add new workout button - end */
+
+/* Workout card - start */
+
+div.workout-cards-area {
+  width: 100%;
+
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  margin: 30px 0 30px 0;
+}
+
+div.workout-card {
+  width: 500px;
+  height: 100px;
+
+  background-color: rgb(255, 255, 255, 0.5);
+  border: 2px solid rgb(242, 197, 61);
+  border-radius: 10px;
+
+  margin-top: 10px;
+  margin-bottom: 10px;
+
+  padding: 10px;
+}
+
+div.workout-card input {
+  margin: 0;
+  font-family: "courier-prime", monospace;
+  font-weight: 700;
+  font-style: normal;
+
+  background: none;
+  border: none;
+  outline: none;
+
+  font-size: 24px;
+}
+
+div.workout-card ul {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  margin: 0;
+  padding: 0;
+}
+
+div.workout-card ul li {
+  list-style-type: none;
+  padding: 0;
+  font-family: "courier-prime", monospace;
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* Workout card - end */
