@@ -130,7 +130,7 @@ div.workout-cards-area {
 
 div.workout-card {
   width: 500px;
-  height: 100px;
+  height: auto;
 
   background-color: rgb(255, 255, 255, 0.5);
   border: 2px solid rgb(242, 197, 61);
@@ -140,6 +140,13 @@ div.workout-card {
   margin-bottom: 10px;
 
   padding: 10px;
+}
+
+div.workout-card-heading {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 
 div.workout-card input {
@@ -171,6 +178,51 @@ div.workout-card ul li {
   font-family: "courier-prime", monospace;
   font-weight: 400;
   font-style: normal;
+
+  width: 115px;
+  text-align: center;
+
+  font-size: 16px;
 }
+
+div.exercise-tab {
+  width: 100%;
+  height: auto;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  background-color: white;
+  border-radius: 10px;
+
+  padding: 0;
+  margin: 3px 0 2px 0;
+}
+
+div.exercise-tab input {
+  font-family: "courier-prime", monospace;
+  font-weight: 400;
+  font-style: normal;
+
+  width: 115px;
+  text-align: center;
+
+  font-size: 14px;
+
+  margin: 5px 0 5px 0;
+
+  background: none;
+  border: none;
+  outline: none;
+}
+
+button.add-exercise-button-area {
+  margin: 20px 5px 0px 5px;
+  float: right;
+
+}
+
 
 /* Workout card - end */
