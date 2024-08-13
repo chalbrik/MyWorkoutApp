@@ -4,27 +4,29 @@ import axios from "axios";
 import Header from "./components/Header";
 import AddWorkoutButton from "./components/AddWorkoutButton";
 import WorkoutCard from "./components/WorkoutCard";
+import Login from "./components/Login";
+import SignUp from "./components/SignUp";
 
 function App() {
   const [workoutCards, setWorkoutCards] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userId, setUserId] = useState(null);
 
   useEffect(() => {
-    let processing = true;
-    axiosFetchData(processing);
-    return () => {
-      processing = false;
-    };
-  }, []);
+    if (isLoggedIn && userId) {
+      axiosFetchData(userId);
+    }
+  }, [isLoggedIn, userId]);
 
-  const axiosFetchData = async (processing) => {
-    await axios
-      .get("http://localhost:5000/workouts")
-      .then((res) => {
-        if (processing) {
-          setWorkoutCards(res.data);
-        }
-      })
-      .catch((err) => console.log(err));
+  const axiosFetchData = async (userId) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/users/${userId}workouts`
+      );
+      setWorkoutCards(response.data);
+    } catch (error) {
+      console.error("Error in fetching data for logged user: ", error);
+    }
   };
 
   async function addWorkoutCard(event) {
@@ -49,6 +51,23 @@ function App() {
 
   function handleOnDelete(id) {
     setWorkoutCards((prevCards) => prevCards.filter((card) => card.id !== id));
+  }
+
+  function handleLogin(userId) {
+    setUserId(userId);
+    setIsLoggedIn(true);
+  }
+
+  if (!isLoggedIn) {
+    return (
+      <div>
+        <Header />
+        <div className="sign-up-login-container">
+          <Login onLogin={handleLogin} />
+          <SignUp />
+        </div>
+      </div>
+    );
   }
 
   return (

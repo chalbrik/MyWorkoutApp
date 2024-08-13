@@ -185,6 +185,13 @@ div.workout-card ul li {
   font-size: 16px;
 }
 
+div.exercise-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
 div.exercise-tab {
   width: 100%;
   height: auto;
@@ -224,5 +231,121 @@ button.add-exercise-button-area {
 
 }
 
+button.exercise-delete-button {
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 0;
+  margin: 0 5px 0 5px;
+}
+
+button.exercise-delete-button svg {
+  fill: rgb(255, 0, 0, 0.3);
+}
+
 
 /* Workout card - end */
+
+/* Login - start */
+div.sign-up-login-container {
+  height: 60vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: flex-start;
+  margin: 5rem 20rem 0 20rem;
+}
+
+div.login-container {
+
+  /* height: 60vh; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+
+}
+
+div.login-container h2 {
+  font-family: "permanent-marker", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 48px;
+
+  color: #F2C53D;
+  color: black;
+  -webkit-text-stroke: 1px #402A0F;
+
+  margin: 0;
+}
+
+div.login-container form {
+
+  font-family: "courier-prime",
+    monospace;
+  font-weight: 400;
+  font-style: normal;
+
+  display: flex;
+  flex-direction: column;
+}
+
+div.login-container form button {
+  margin-top: 15px;
+
+  font-family: "courier-prime",
+    monospace;
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* Login-end */
+
+/* Sign up-start */
+div.login-container {
+
+  /* height: 60vh; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+
+}
+
+div.sign-up-container h2 {
+  font-family: "permanent-marker", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 48px;
+
+  color: #F2C53D;
+  color: black;
+  -webkit-text-stroke: 1px #402A0F;
+
+  margin: 0;
+}
+
+div.sign-up-container form {
+
+  font-family: "courier-prime",
+    monospace;
+  font-weight: 400;
+  font-style: normal;
+
+  display: flex;
+  flex-direction: column;
+}
+
+div.sign-up-container form button {
+  margin-top: 15px;
+
+  font-family: "courier-prime",
+    monospace;
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* Sign up-end */

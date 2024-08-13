@@ -79,6 +79,10 @@ function WorkoutCard(props) {
     }
   }
 
+  function handleOnExerciseTabDelete(id) {
+    setExerciseTabs((prevTabs) => prevTabs.filter((tab) => tab.id !== id));
+  }
+
   return (
     <div className="workout-card">
       <div className="workout-card-heading">
@@ -108,6 +112,8 @@ function WorkoutCard(props) {
             repetitions={exerciseTab.repetitions}
             weight={exerciseTab.weight}
             onTabChange={handleTabChange}
+            workoutCardId={props.id}
+            onExerciseTabDelete={handleOnExerciseTabDelete}
           />
         );
       })}

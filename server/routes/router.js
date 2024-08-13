@@ -3,6 +3,49 @@ import { Router } from "express";
 
 const router = Router();
 
+const users = [
+  {
+    id: 1,
+    username: "user1",
+    password: "password1",
+    workoutCards: [
+      {
+        id: 1,
+        workoutTitle: "Biceps",
+        exerciseTabs: [
+          {
+            id: 1,
+            exercise: "Curls",
+            series: "3",
+            repetitions: "12",
+            weight: "20",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 2,
+    username: "user2",
+    password: "password2",
+    workoutCards: [
+      {
+        id: 2,
+        workoutTitle: "Legs",
+        exerciseTabs: [
+          {
+            id: 1,
+            exercise: "Squats",
+            series: "4",
+            repetitions: "8",
+            weight: "60",
+          },
+        ],
+      },
+    ],
+  },
+];
+
 const workoutCardsData = [
   {
     id: 1,
@@ -32,8 +75,29 @@ const workoutCardsData = [
   },
 ];
 
-router.get("/workouts", (req, res) => {
-  res.send(workoutCardsData);
+router.post("/login", (req, res) => {
+  const { username, password } = req.body;
+
+  const user = users.find(
+    (user) => user.username === username && user.password === password
+  );
+
+  if (user) {
+    res.status(200).send({ userId: user.id });
+  } else {
+    res.status(401).send({ message: "Invalid credentials" });
+  }
+});
+
+router.get("/users/:id/workouts", (req, res) => {
+  const userId = parseInt(req.params.id);
+  const user = users.find((user) => user.id === userId);
+
+  if (user) {
+    res.send(user.workoutCards);
+  } else {
+    res.status(404).send({ message: "User not found" });
+  }
 });
 
 router.post("/add-workouts", (req, res) => {
@@ -72,6 +136,32 @@ router.delete("/workouts/deleteCard/:id", (req, res) => {
     res.status(404).send({ message: "Workout not found" });
   }
 });
+
+router.delete(
+  "/workouts/:workoutCardId/deleteExerciseTab/:exerciseTabId",
+  (req, res) => {
+    const workoutCardId = parseInt(req.params.workoutCardId);
+    const exerciseTabId = parseInt(req.params.exerciseTabId);
+    const workoutCard = workoutCardsData.find(
+      (card) => card.id === workoutCardId
+    );
+
+    if (workoutCard) {
+      const exerciseTabIndex = workoutCard.exerciseTabs.findIndex(
+        (tab) => tab.id === exerciseTabId
+      );
+
+      if (exerciseTabIndex !== -1) {
+        workoutCard.exerciseTabs.splice(exerciseTabIndex, 1);
+        res.status(204).send();
+      } else {
+        res.status(404).send({ message: "Exercise tab not found" });
+      }
+    } else {
+      res.status(404).send({ message: "Workout card not found" });
+    }
+  }
+);
 
 // na pewno będzie GET do strony internetowej
 // GET do zalogownia
