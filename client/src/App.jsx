@@ -1,39 +1,54 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 import Header from "./components/Header";
 import AddWorkoutButton from "./components/AddWorkoutButton";
 import WorkoutCard from "./components/WorkoutCard";
 
 function App() {
-  const [backendData, setBackendData] = useState([{}]);
-
   const [workoutCards, setWorkoutCards] = useState([]);
 
   useEffect(() => {
-    fetch("/api")
-      .then((response) => response.json())
-      .then((data) => {
-        setBackendData(data);
-      });
+    let processing = true;
+    axiosFetchData(processing);
+    return () => {
+      processing = false;
+    };
   }, []);
 
-  // const addWorkoutCard = async () => {
-  //   try {
-  //     const response = await fetch("");
-  //   } catch (error) {
-  //     console.error("Error during adding a component: ", error);
-  //   }
-  // };
+  const axiosFetchData = async (processing) => {
+    await axios
+      .get("http://localhost:5000/workouts")
+      .then((res) => {
+        if (processing) {
+          setWorkoutCards(res.data);
+        }
+      })
+      .catch((err) => console.log(err));
+  };
 
-  function addWorkoutCard(event) {
+  async function addWorkoutCard(event) {
     const newWorkoutCard = {
       id: workoutCards.length + 1,
       workoutTitle: "Name your workout",
+      exerciseTabs: [],
     };
 
-    setWorkoutCards([...workoutCards, newWorkoutCard]);
+    try {
+      const response = await axios.post(
+        `http://localhost:5000/add-workouts`,
+        newWorkoutCard
+      );
+      setWorkoutCards([...workoutCards, newWorkoutCard]);
+    } catch (error) {
+      console.error("Error in adding workout card: ", error);
+    }
 
     event.preventDefault();
+  }
+
+  function handleOnDelete(id) {
+    setWorkoutCards((prevCards) => prevCards.filter((card) => card.id !== id));
   }
 
   return (
@@ -45,7 +60,10 @@ function App() {
           return (
             <WorkoutCard
               key={workoutCard.id}
+              id={workoutCard.id}
               workoutTitle={workoutCard.workoutTitle}
+              exerciseTabs={workoutCard.exerciseTabs}
+              onDelete={handleOnDelete}
             />
           );
         })}

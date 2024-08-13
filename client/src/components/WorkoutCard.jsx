@@ -1,12 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ExerciseTab from "./ExerciseTab";
+import axios from "axios";
 
 function WorkoutCard(props) {
   const [workoutCardData, setWorkoutCardData] = useState({
-    workoutTitle: "",
+    workoutTitle: props.workoutTitle || "",
   });
 
   const [exerciseTabs, setExerciseTabs] = useState([]);
+
+  // Ustawienie początkowych wartości dla exerciseTabs
+  useEffect(() => {
+    if (props.exerciseTabs) {
+      setExerciseTabs(props.exerciseTabs);
+    }
+  }, [props.exerciseTabs]);
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -37,14 +45,38 @@ function WorkoutCard(props) {
   }
 
   function handleTabChange(id, field, value) {
-    console.log(id);
-    console.log(field);
-    console.log(value);
     setExerciseTabs((prevExerciseTabs) =>
       prevExerciseTabs.map((tab) =>
         tab.id === id ? { ...tab, [field]: value } : tab
       )
     );
+  }
+
+  async function handleSave() {
+    const updateWorkoutCard = {
+      workoutTitle: workoutCardData.workoutTitle,
+      exerciseTabs: exerciseTabs,
+    };
+
+    try {
+      const response = await axios.put(
+        `http://localhost:5000/workouts/${props.id}`,
+        updateWorkoutCard
+      );
+    } catch (error) {
+      console.error("Error updating workout card: ", error);
+    }
+  }
+
+  async function handleDelete() {
+    try {
+      const response = await axios.delete(
+        `http://localhost:5000/workouts/deleteCard/${props.id}`
+      );
+      props.onDelete(props.id);
+    } catch (error) {
+      console.error("Error deleting workout card: ", error);
+    }
   }
 
   return (
@@ -56,7 +88,8 @@ function WorkoutCard(props) {
           placeholder={props.workoutTitle}
           value={workoutCardData.workoutTitle}
         />
-        <button>Save</button>
+        <button onClick={handleSave}>Save</button>
+        <button onClick={handleDelete}>Delete</button>
       </div>
 
       <ul>
