@@ -58,6 +58,29 @@ router.get("/users", (req, res) => {
   }
 });
 
+router.post("/users/add-user", (req, res) => {
+  const { username, password } = req.body;
+
+  if (!username || !password) {
+    return res
+      .status(400)
+      .send({ message: "Username and password are required" });
+  }
+
+  const newUserId = users.length > 0 ? users[users.length - 1].id + 1 : 1;
+
+  const newUser = {
+    id: newUserId,
+    username: username,
+    password: password,
+    workoutCards: [],
+  };
+
+  users.push(newUser);
+
+  res.status(201).send({ newUserId: newUser.id });
+});
+
 router.post("/login", (req, res) => {
   const { username, password } = req.body;
 
@@ -120,15 +143,15 @@ router.put("/users/:userId/workouts/:workoutId", (req, res) => {
 
 router.delete("/users/:userId/workouts/deleteCard/:workoutId", (req, res) => {
   const userId = parseInt(req.params.userId);
+  const workoutId = parseInt(req.params.workoutId);
 
   const user = users.find((user) => user.id === userId);
 
   if (user) {
-    const workoutId = parseInt(req.params.workoutId);
     const index = user.workoutCards.findIndex((card) => card.id === workoutId);
     if (index !== -1) {
       //usunięcie karty z bazy danych
-      users.workoutCards.splice(index, 1);
+      user.workoutCards.splice(index, 1);
       res.status(204).send();
     } else {
       res.status(404).send({ message: "Workout not found" });

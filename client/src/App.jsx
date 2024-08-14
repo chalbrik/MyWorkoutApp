@@ -21,7 +21,7 @@ function App() {
   const axiosFetchData = async (userId) => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/users/${userId}workouts`
+        `http://localhost:5000/users/${userId}/workouts`
       );
       setWorkoutCards(response.data);
     } catch (error) {
@@ -32,7 +32,7 @@ function App() {
   async function addWorkoutCard(event) {
     const newWorkoutCard = {
       id: workoutCards.length + 1,
-      workoutTitle: "Name your workout",
+      workoutTitle: "",
       exerciseTabs: [],
     };
 
@@ -58,13 +58,18 @@ function App() {
     setIsLoggedIn(true);
   }
 
+  function handleSignUp(newUserId) {
+    setUserId(newUserId);
+    setIsLoggedIn(true);
+  }
+
   if (!isLoggedIn) {
     return (
       <div>
         <Header />
         <div className="sign-up-login-container">
           <Login onLogin={handleLogin} />
-          <SignUp />
+          <SignUp onSignUp={handleSignUp} />
         </div>
       </div>
     );

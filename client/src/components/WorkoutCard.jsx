@@ -31,7 +31,10 @@ function WorkoutCard(props) {
 
   function handleAddExercise() {
     const newExerciseTab = {
-      id: exerciseTabs.length + 1,
+      id:
+        exerciseTabs.length > 0
+          ? exerciseTabs[exerciseTabs.length - 1].id + 1
+          : 1,
       exercise: "",
       series: "",
       repetitions: "",
@@ -89,7 +92,7 @@ function WorkoutCard(props) {
         <input
           onChange={handleChange}
           name="workoutTitle"
-          placeholder={props.workoutTitle}
+          placeholder={"Name your workout"}
           value={workoutCardData.workoutTitle}
         />
         <button onClick={handleSave}>Save</button>
