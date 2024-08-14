@@ -46,34 +46,17 @@ const users = [
   },
 ];
 
-const workoutCardsData = [
-  {
-    id: 1,
-    workoutTitle: "Biceps",
-    exerciseTabs: [
-      {
-        id: 1,
-        exercise: "Curls",
-        series: "3",
-        repetitions: "12",
-        weight: "20",
-      },
-    ],
-  },
-  {
-    id: 2,
-    workoutTitle: "Legs",
-    exerciseTabs: [
-      {
-        id: 1,
-        exercise: "Squats",
-        series: "4",
-        repetitions: "8",
-        weight: "60",
-      },
-    ],
-  },
-];
+router.get("/test", (req, res) => {
+  res.send("Server is working");
+});
+
+router.get("/users", (req, res) => {
+  if (users) {
+    res.send(users);
+  } else {
+    res.status(404).send({ message: "Users not found" });
+  }
+});
 
 router.post("/login", (req, res) => {
   const { username, password } = req.body;
@@ -100,79 +83,92 @@ router.get("/users/:id/workouts", (req, res) => {
   }
 });
 
-router.post("/add-workouts", (req, res) => {
+router.post("/users/:id/add-workouts", (req, res) => {
+  const userId = parseInt(req.params.id);
   const newWorkoutCard = req.body;
 
-  if (newWorkoutCard) {
-    workoutCardsData.push(newWorkoutCard);
-    res.status(201).send(newWorkoutCard);
+  const user = users.find((user) => user.id === userId);
+
+  if (user && newWorkoutCard) {
+    user.workoutCards.push(newWorkoutCard);
+    res.status(200).send(newWorkoutCard);
   } else {
     res.status(400).send({ message: "Invalid workout data" });
   }
 });
 
-router.put("/workouts/:id", (req, res) => {
-  const workoutId = parseInt(req.params.id);
-  const index = workoutCardsData.findIndex((card) => card.id === workoutId);
+router.put("/users/:userId/workouts/:workoutId", (req, res) => {
+  const userId = parseInt(req.params.userId);
+  const workoutId = parseInt(req.params.workoutId);
 
-  if (index !== -1) {
-    //aktualizacja danych karty treningowej
-    workoutCardsData[index] = { id: workoutId, ...req.body };
-    res.send(workoutCardsData[index]);
+  const user = users.find((user) => user.id === userId);
+
+  if (user) {
+    const index = user.workoutCards.findIndex((card) => card.id === workoutId);
+
+    if (index !== -1) {
+      //aktualizacja danych karty treningowej
+      user.workoutCards[index] = { id: workoutId, ...req.body };
+      res.send(user.workoutCards[index]);
+    } else {
+      res.status(404).send({ message: "Workout not found" });
+    }
   } else {
-    res.status(404).send({ message: "Workout not found" });
+    res.status(404).send({ message: "User not found" });
   }
 });
 
-router.delete("/workouts/deleteCard/:id", (req, res) => {
-  const workoutId = parseInt(req.params.id);
-  const index = workoutCardsData.findIndex((card) => card.id === workoutId);
+router.delete("/users/:userId/workouts/deleteCard/:workoutId", (req, res) => {
+  const userId = parseInt(req.params.userId);
 
-  if (index !== -1) {
-    //usunięcie karty z bazy danych
-    workoutCardsData.splice(index, 1);
-    res.status(204).send();
+  const user = users.find((user) => user.id === userId);
+
+  if (user) {
+    const workoutId = parseInt(req.params.workoutId);
+    const index = user.workoutCards.findIndex((card) => card.id === workoutId);
+    if (index !== -1) {
+      //usunięcie karty z bazy danych
+      users.workoutCards.splice(index, 1);
+      res.status(204).send();
+    } else {
+      res.status(404).send({ message: "Workout not found" });
+    }
   } else {
-    res.status(404).send({ message: "Workout not found" });
+    res.status(404).send({ message: "User not found" });
   }
 });
 
 router.delete(
-  "/workouts/:workoutCardId/deleteExerciseTab/:exerciseTabId",
+  "/users/:userId/workouts/:workoutCardId/deleteExerciseTab/:exerciseTabId",
   (req, res) => {
+    const userId = parseInt(req.params.userId);
     const workoutCardId = parseInt(req.params.workoutCardId);
     const exerciseTabId = parseInt(req.params.exerciseTabId);
-    const workoutCard = workoutCardsData.find(
-      (card) => card.id === workoutCardId
-    );
 
-    if (workoutCard) {
-      const exerciseTabIndex = workoutCard.exerciseTabs.findIndex(
-        (tab) => tab.id === exerciseTabId
+    const user = users.find((user) => user.id === userId);
+
+    if (user) {
+      const workoutCard = user.workoutCards.find(
+        (card) => card.id === workoutCardId
       );
 
-      if (exerciseTabIndex !== -1) {
-        workoutCard.exerciseTabs.splice(exerciseTabIndex, 1);
-        res.status(204).send();
+      if (workoutCard) {
+        const exerciseTabIndex = workoutCard.exerciseTabs.findIndex(
+          (tab) => tab.id === exerciseTabId
+        );
+        if (exerciseTabIndex !== -1) {
+          workoutCard.exerciseTabs.splice(exerciseTabIndex, 1);
+          res.status(204).send();
+        } else {
+          res.status(404).send({ message: "Exercise tab not found" });
+        }
       } else {
-        res.status(404).send({ message: "Exercise tab not found" });
+        res.status(404).send({ message: "Workout card not found" });
       }
     } else {
-      res.status(404).send({ message: "Workout card not found" });
+      res.status(404).send({ message: "User not found" });
     }
   }
 );
-
-// na pewno będzie GET do strony internetowej
-// GET do zalogownia
-// GET do wylogowania
-// POST do umieszczenia karty treningowej
-// router.post("/add-workout-card", (req, res) => {
-//   componentCount += 1;
-//   const newComponent = {};
-// });
-// DELETE do usunięcia karty treningowej
-// POST do umieszczenia ćwiczenia
-// DELETE do usunięcia ćwiczenia
 
 export default router;

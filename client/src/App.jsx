@@ -38,10 +38,10 @@ function App() {
 
     try {
       const response = await axios.post(
-        `http://localhost:5000/add-workouts`,
+        `http://localhost:5000/users/${userId}/add-workouts`,
         newWorkoutCard
       );
-      setWorkoutCards([...workoutCards, newWorkoutCard]);
+      setWorkoutCards([...workoutCards, response.data]);
     } catch (error) {
       console.error("Error in adding workout card: ", error);
     }
@@ -80,6 +80,7 @@ function App() {
             <WorkoutCard
               key={workoutCard.id}
               id={workoutCard.id}
+              userId={userId}
               workoutTitle={workoutCard.workoutTitle}
               exerciseTabs={workoutCard.exerciseTabs}
               onDelete={handleOnDelete}

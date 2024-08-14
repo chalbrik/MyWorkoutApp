@@ -13,7 +13,7 @@ function ExerciseTab(props) {
   async function handleExerciseTabDelete() {
     try {
       const response = await axios.delete(
-        `http://localhost:5000/workouts/${props.workoutCardId}/deleteExerciseTab/${props.id}`
+        `http://localhost:5000/users/${props.userId}/workouts/${props.workoutCardId}/deleteExerciseTab/${props.id}`
       );
       props.onExerciseTabDelete(props.id);
     } catch (error) {

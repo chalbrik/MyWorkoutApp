@@ -60,7 +60,7 @@ function WorkoutCard(props) {
 
     try {
       const response = await axios.put(
-        `http://localhost:5000/workouts/${props.id}`,
+        `http://localhost:5000/users/${props.userId}/workouts/${props.id}`,
         updateWorkoutCard
       );
     } catch (error) {
@@ -71,7 +71,7 @@ function WorkoutCard(props) {
   async function handleDelete() {
     try {
       const response = await axios.delete(
-        `http://localhost:5000/workouts/deleteCard/${props.id}`
+        `http://localhost:5000/users/${props.userId}/workouts/deleteCard/${props.id}`
       );
       props.onDelete(props.id);
     } catch (error) {
@@ -107,6 +107,7 @@ function WorkoutCard(props) {
           <ExerciseTab
             key={exerciseTab.id}
             id={exerciseTab.id}
+            userId={props.userId}
             exercise={exerciseTab.exercise}
             series={exerciseTab.series}
             repetitions={exerciseTab.repetitions}
