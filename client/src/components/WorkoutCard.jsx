@@ -103,12 +103,14 @@ function WorkoutCard(props) {
           placeholder={"Name your workout"}
           value={workoutCardData.workoutTitle}
         />
-        <button onClick={handleSave}>Save</button>
-        <button onClick={handleDelete}>Delete</button>
+        <div>
+          <button onClick={handleSave}>Save</button>
+          <button onClick={handleDelete}>Delete</button>
+        </div>
       </div>
 
       <ul>
-        <li>Exercise</li>
+        <li className="exercise">Exercise</li>
         <li>Series</li>
         <li>Repetitions</li>
         <li>Weight [kg]</li>

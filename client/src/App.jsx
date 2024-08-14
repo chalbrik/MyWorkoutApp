@@ -117,6 +117,11 @@ function App() {
             isPasswordMatch={passwordMatch}
           />
         </div>
+        <div className="example">
+          <p>Demo-example credentials</p>
+          <p>username: user1</p>
+          <p>password: password1</p>
+        </div>
       </div>
     );
   }

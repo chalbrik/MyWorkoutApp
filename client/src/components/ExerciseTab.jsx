@@ -25,6 +25,7 @@ function ExerciseTab(props) {
     <div className="exercise-container">
       <div className="exercise-tab">
         <input
+          className="exercise-tab"
           type="text"
           onChange={handleChange}
           name="exercise"

@@ -1,50 +1,10 @@
 import express from "express";
 import { Router } from "express";
+import usersData from "../data/usersData.js";
 
 const router = Router();
 
-const users = [
-  {
-    id: 1,
-    username: "user1",
-    password: "password1",
-    workoutCards: [
-      {
-        id: 1,
-        workoutTitle: "Biceps",
-        exerciseTabs: [
-          {
-            id: 1,
-            exercise: "Curls",
-            series: "3",
-            repetitions: "12",
-            weight: "20",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: 2,
-    username: "user2",
-    password: "password2",
-    workoutCards: [
-      {
-        id: 2,
-        workoutTitle: "Legs",
-        exerciseTabs: [
-          {
-            id: 1,
-            exercise: "Squats",
-            series: "4",
-            repetitions: "8",
-            weight: "60",
-          },
-        ],
-      },
-    ],
-  },
-];
+const users = usersData;
 
 router.get("/test", (req, res) => {
   res.send("Server is working");
