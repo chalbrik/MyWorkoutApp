@@ -19,6 +19,7 @@ function Login(props) {
         props.onLogin(response.data.userId); //przekazuje Id zalogowanego użytkownika do komponentu nadrzędnego
       }
     } catch (error) {
+      props.notValid();
       console.error("Error in log in: ", error);
     }
 
@@ -57,6 +58,7 @@ function Login(props) {
         />
         <button type="submit">Login</button>
       </form>
+      {props.isValid && <p className="comment">Invalid credentials</p>}
     </div>
   );
 }

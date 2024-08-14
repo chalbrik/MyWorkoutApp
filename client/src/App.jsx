@@ -9,8 +9,17 @@ import SignUp from "./components/SignUp";
 
 function App() {
   const [workoutCards, setWorkoutCards] = useState([]);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userId, setUserId] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    localStorage.getItem("isLoggedIn") === "true"
+  );
+  const [userId, setUserId] = useState(localStorage.getItem("userId"));
+
+  const [displayLogout, setDisplayLogout] = useState(
+    localStorage.getItem("displayLogout")
+  );
+
+  const [passwordMatch, setPasswordMatch] = useState(false);
+  const [invalidCredentials, setInvalidCredentials] = useState(false);
 
   useEffect(() => {
     if (isLoggedIn && userId) {
@@ -56,20 +65,57 @@ function App() {
   function handleLogin(userId) {
     setUserId(userId);
     setIsLoggedIn(true);
+    setDisplayLogout(true);
+    setPasswordMatch(false);
+    setInvalidCredentials(false);
+    localStorage.setItem("userId", userId);
+    localStorage.setItem("isLoggedIn", "true");
+    localStorage.setItem("displayLogout", "true");
   }
 
   function handleSignUp(newUserId) {
     setUserId(newUserId);
     setIsLoggedIn(true);
+    setDisplayLogout(true);
+    setPasswordMatch(false);
+    setInvalidCredentials(false);
+    localStorage.setItem("userId", newUserId);
+    localStorage.setItem("isLoggedIn", "true");
+    localStorage.setItem("displayLogout", "true");
+  }
+
+  function handleOnLogout() {
+    setUserId(null);
+    setIsLoggedIn(false);
+    setDisplayLogout(false);
+    localStorage.removeItem("userId");
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("displayLogout");
+  }
+
+  function handleNotMatch() {
+    setPasswordMatch(true);
+  }
+
+  function handleNotValid() {
+    setInvalidCredentials(true);
   }
 
   if (!isLoggedIn) {
     return (
       <div>
-        <Header />
+        <Header navItemsDisplay={displayLogout} />
         <div className="sign-up-login-container">
-          <Login onLogin={handleLogin} />
-          <SignUp onSignUp={handleSignUp} />
+          <Login
+            onLogin={handleLogin}
+            notValid={handleNotValid}
+            isValid={invalidCredentials}
+          />
+          <SignUp
+            onSignUp={handleSignUp}
+            notMatch={handleNotMatch}
+            isPasswordMatch={passwordMatch}
+          />
         </div>
       </div>
     );
@@ -77,7 +123,7 @@ function App() {
 
   return (
     <div>
-      <Header />
+      <Header onLogout={handleOnLogout} navItemsDisplay={displayLogout} />
       <AddWorkoutButton onClick={addWorkoutCard} />
       <div className="workout-cards-area">
         {workoutCards.map((workoutCard) => {

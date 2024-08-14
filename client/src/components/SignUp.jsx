@@ -33,6 +33,7 @@ function SignUp(props) {
     } else {
       // tu trzeba coś zapisac żeby wyświetlił się komunikat że hasło się jest takie same
       console.error("Passwords do not match: ");
+      props.notMatch();
     }
   }
 
@@ -78,6 +79,9 @@ function SignUp(props) {
         />
         <button type="submit">Sign up</button>
       </form>
+      {props.isPasswordMatch && (
+        <p className="comment">Passwords do not match</p>
+      )}
     </div>
   );
 }

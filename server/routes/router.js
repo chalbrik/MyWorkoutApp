@@ -120,6 +120,27 @@ router.post("/users/:id/add-workouts", (req, res) => {
   }
 });
 
+router.post("/users/:userId/workouts/:workoutId/exerciseTabs", (req, res) => {
+  const userId = parseInt(req.params.userId);
+  const workoutId = parseInt(req.params.workoutId);
+  const newExerciseTab = req.body;
+
+  const user = users.find((user) => user.id === userId);
+
+  if (user) {
+    const workoutCard = user.workoutCards.find((card) => card.id === workoutId);
+
+    if (workoutCard) {
+      workoutCard.exerciseTabs.push(newExerciseTab); // Dodajemy exerciseTab do odpowiedniego workoutCard
+      res.status(200).send(newExerciseTab);
+    } else {
+      res.status(404).send({ message: "Workout not found" });
+    }
+  } else {
+    res.status(404).send({ message: "User not found" });
+  }
+});
+
 router.put("/users/:userId/workouts/:workoutId", (req, res) => {
   const userId = parseInt(req.params.userId);
   const workoutId = parseInt(req.params.workoutId);

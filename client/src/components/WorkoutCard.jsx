@@ -29,7 +29,7 @@ function WorkoutCard(props) {
     event.preventDefault();
   }
 
-  function handleAddExercise() {
+  async function handleAddExercise() {
     const newExerciseTab = {
       id:
         exerciseTabs.length > 0
@@ -41,10 +41,18 @@ function WorkoutCard(props) {
       weight: "",
     };
 
-    setExerciseTabs((prevExerciseTabs) => [
-      ...prevExerciseTabs,
-      newExerciseTab,
-    ]);
+    try {
+      const response = await axios.post(
+        `http://localhost:5000/users/${props.userId}/workouts/${props.id}/exerciseTabs`,
+        newExerciseTab
+      );
+      setExerciseTabs((prevExerciseTabs) => [
+        ...prevExerciseTabs,
+        response.data,
+      ]);
+    } catch (error) {
+      console.error("Error in add exercise tab: ", error);
+    }
   }
 
   function handleTabChange(id, field, value) {

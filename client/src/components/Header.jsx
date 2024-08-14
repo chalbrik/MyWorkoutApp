@@ -1,13 +1,17 @@
 import React from "react";
 
-function Header() {
+function Header(props) {
   return (
     <header>
       <h1>MyWorkout</h1>
       <nav>
-        <ul>
-          <li>Log out</li>
-        </ul>
+        {props.navItemsDisplay && (
+          <ul>
+            <li onClick={props.onLogout} style={{ cursor: "pointer" }}>
+              Log out
+            </li>
+          </ul>
+        )}
       </nav>
     </header>
   );
