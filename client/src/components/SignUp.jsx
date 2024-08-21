@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import WorkoutCard from "./WorkoutCard";
+import PropTypes from "prop-types";
 
 function SignUp(props) {
   const [newUsername, setNewUserName] = useState("");
@@ -24,8 +24,11 @@ function SignUp(props) {
           newUser
         );
         if (response.status === 201) {
+          console.log(response.data);
+          const { token, newUserId } = response.data;
           console.log("Success");
-          props.onSignUp(response.data.newUserId);
+          props.setToken(token);
+          props.onSignUp(newUserId);
         }
       } catch (error) {
         console.error("Error in sign in: ", error);
@@ -85,5 +88,9 @@ function SignUp(props) {
     </div>
   );
 }
+
+SignUp.propTypes = {
+  setToken: PropTypes.func.isRequired,
+};
 
 export default SignUp;

@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
+import PropTypes from "prop-types";
 
 function Login(props) {
   const [username, setUsername] = useState("");
@@ -16,7 +17,9 @@ function Login(props) {
       });
 
       if (response.status === 200) {
-        props.onLogin(response.data.userId); //przekazuje Id zalogowanego użytkownika do komponentu nadrzędnego
+        const { token, userId } = response.data;
+        props.setToken(token); //przekazuje token do komponentu nadrzędnego
+        props.onLogin(userId); //przekazuje Id zalogowanego użytkownika do komponentu nadrzędnego
       }
     } catch (error) {
       props.notValid();
@@ -62,5 +65,9 @@ function Login(props) {
     </div>
   );
 }
+
+Login.propTypes = {
+  setToken: PropTypes.func.isRequired,
+};
 
 export default Login;

@@ -38,7 +38,7 @@ router.post("/users/add-user", (req, res) => {
 
   users.push(newUser);
 
-  res.status(201).send({ newUserId: newUser.id });
+  res.status(201).send({ token: "test456", newUserId: newUser.id });
 });
 
 router.post("/login", (req, res) => {
@@ -49,7 +49,10 @@ router.post("/login", (req, res) => {
   );
 
   if (user) {
-    res.status(200).send({ userId: user.id });
+    res.status(200).send({
+      token: "test123",
+      userId: user.id,
+    });
   } else {
     res.status(401).send({ message: "Invalid credentials" });
   }

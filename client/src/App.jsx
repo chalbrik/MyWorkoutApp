@@ -6,20 +6,23 @@ import AddWorkoutButton from "./components/AddWorkoutButton";
 import WorkoutCard from "./components/WorkoutCard";
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
+import useToken from "./components/useToken";
 
 function App() {
   const [workoutCards, setWorkoutCards] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(
-    localStorage.getItem("isLoggedIn") === "true"
+    sessionStorage.getItem("isLoggedIn") === "true"
   );
   const [userId, setUserId] = useState(localStorage.getItem("userId"));
 
   const [displayLogout, setDisplayLogout] = useState(
-    localStorage.getItem("displayLogout")
+    sessionStorage.getItem("displayLogout")
   );
 
   const [passwordMatch, setPasswordMatch] = useState(false);
   const [invalidCredentials, setInvalidCredentials] = useState(false);
+
+  const { token, setToken } = useToken();
 
   useEffect(() => {
     if (isLoggedIn && userId) {
@@ -68,9 +71,9 @@ function App() {
     setDisplayLogout(true);
     setPasswordMatch(false);
     setInvalidCredentials(false);
-    localStorage.setItem("userId", userId);
-    localStorage.setItem("isLoggedIn", "true");
-    localStorage.setItem("displayLogout", "true");
+    sessionStorage.setItem("userId", userId);
+    sessionStorage.setItem("isLoggedIn", "true");
+    sessionStorage.setItem("displayLogout", "true");
   }
 
   function handleSignUp(newUserId) {
@@ -79,18 +82,19 @@ function App() {
     setDisplayLogout(true);
     setPasswordMatch(false);
     setInvalidCredentials(false);
-    localStorage.setItem("userId", newUserId);
-    localStorage.setItem("isLoggedIn", "true");
-    localStorage.setItem("displayLogout", "true");
+    sessionStorage.setItem("userId", newUserId);
+    sessionStorage.setItem("isLoggedIn", "true");
+    sessionStorage.setItem("displayLogout", "true");
   }
 
   function handleOnLogout() {
     setUserId(null);
     setIsLoggedIn(false);
     setDisplayLogout(false);
-    localStorage.removeItem("userId");
-    localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("displayLogout");
+    sessionStorage.removeItem("userId");
+    sessionStorage.removeItem("isLoggedIn");
+    sessionStorage.removeItem("displayLogout");
+    sessionStorage.removeItem("token");
   }
 
   function handleNotMatch() {
@@ -101,7 +105,7 @@ function App() {
     setInvalidCredentials(true);
   }
 
-  if (!isLoggedIn) {
+  if (!token && !isLoggedIn) {
     return (
       <div>
         <Header navItemsDisplay={displayLogout} />
@@ -110,11 +114,13 @@ function App() {
             onLogin={handleLogin}
             notValid={handleNotValid}
             isValid={invalidCredentials}
+            setToken={setToken}
           />
           <SignUp
             onSignUp={handleSignUp}
             notMatch={handleNotMatch}
             isPasswordMatch={passwordMatch}
+            setToken={setToken}
           />
         </div>
         <div className="example">
