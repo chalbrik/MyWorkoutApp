@@ -13,7 +13,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(
     sessionStorage.getItem("isLoggedIn") === "true"
   );
-  const [userId, setUserId] = useState(localStorage.getItem("userId"));
+  const [userId, setUserId] = useState(sessionStorage.getItem("userId"));
 
   const [displayLogout, setDisplayLogout] = useState(
     sessionStorage.getItem("displayLogout")
@@ -25,6 +25,8 @@ function App() {
   const { token, setToken } = useToken();
 
   useEffect(() => {
+    console.log("isLoggedIn:", isLoggedIn);
+    console.log("userId:", userId);
     if (isLoggedIn && userId) {
       axiosFetchData(userId);
     }
@@ -35,6 +37,7 @@ function App() {
       const response = await axios.get(
         `http://localhost:5000/users/${userId}/workouts`
       );
+      console.log(response.data);
       setWorkoutCards(response.data);
     } catch (error) {
       console.error("Error in fetching data for logged user: ", error);
