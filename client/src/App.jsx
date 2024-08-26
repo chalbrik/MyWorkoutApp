@@ -24,6 +24,8 @@ function App() {
 
   const { token, setToken } = useToken();
 
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     console.log("isLoggedIn:", isLoggedIn);
     console.log("userId:", userId);
@@ -33,6 +35,7 @@ function App() {
   }, [isLoggedIn, userId]);
 
   const axiosFetchData = async (userId) => {
+    setLoading(true);
     try {
       const response = await axios.get(
         `http://localhost:5000/users/${userId}/workouts`
@@ -41,6 +44,8 @@ function App() {
       setWorkoutCards(response.data);
     } catch (error) {
       console.error("Error in fetching data for logged user: ", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -77,6 +82,10 @@ function App() {
     sessionStorage.setItem("userId", userId);
     sessionStorage.setItem("isLoggedIn", "true");
     sessionStorage.setItem("displayLogout", "true");
+
+    setWorkoutCards([]);
+
+    axiosFetchData(userId);
   }
 
   function handleSignUp(newUserId) {
@@ -139,20 +148,24 @@ function App() {
     <div>
       <Header onLogout={handleOnLogout} navItemsDisplay={displayLogout} />
       <AddWorkoutButton onClick={addWorkoutCard} />
-      <div className="workout-cards-area">
-        {workoutCards.map((workoutCard) => {
-          return (
-            <WorkoutCard
-              key={workoutCard.id}
-              id={workoutCard.id}
-              userId={userId}
-              workoutTitle={workoutCard.workoutTitle}
-              exerciseTabs={workoutCard.exerciseTabs}
-              onDelete={handleOnDelete}
-            />
-          );
-        })}
-      </div>
+      {loading ? (
+        <p>loading</p>
+      ) : (
+        <div className="workout-cards-area">
+          {workoutCards.map((workoutCard) => {
+            return (
+              <WorkoutCard
+                key={workoutCard.id}
+                id={workoutCard.id}
+                userId={userId}
+                workoutTitle={workoutCard.workoutTitle}
+                exerciseTabs={workoutCard.exerciseTabs}
+                onDelete={handleOnDelete}
+              />
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

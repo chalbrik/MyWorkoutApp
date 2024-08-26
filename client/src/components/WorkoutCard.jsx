@@ -11,10 +11,11 @@ function WorkoutCard(props) {
 
   // Ustawienie początkowych wartości dla exerciseTabs
   useEffect(() => {
-    if (props.exerciseTabs) {
+    if (props.workoutTitle && props.exerciseTabs) {
+      setWorkoutCardData(props.workoutTitle);
       setExerciseTabs(props.exerciseTabs);
     }
-  }, [props.exerciseTabs]);
+  }, [props.workoutTitle, props.exerciseTabs]);
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -74,6 +75,9 @@ function WorkoutCard(props) {
         `http://localhost:5000/users/${props.userId}/workouts/${props.id}`,
         updateWorkoutCard
       );
+      console.log(response.data.workoutTitle);
+      console.log(workoutCardData);
+      setWorkoutCardData({ workoutTitle: response.data.workoutTitle });
     } catch (error) {
       console.error("Error updating workout card: ", error);
     }
