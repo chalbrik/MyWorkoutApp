@@ -121,24 +121,26 @@ function App() {
     return (
       <div>
         <Header navItemsDisplay={displayLogout} />
-        <div className="sign-up-login-container">
-          <Login
-            onLogin={handleLogin}
-            notValid={handleNotValid}
-            isValid={invalidCredentials}
-            setToken={setToken}
-          />
-          <SignUp
-            onSignUp={handleSignUp}
-            notMatch={handleNotMatch}
-            isPasswordMatch={passwordMatch}
-            setToken={setToken}
-          />
-        </div>
-        <div className="example">
-          <p>Demo-example credentials</p>
-          <p>username: user1</p>
-          <p>password: password1</p>
+        <div className="main-page-container">
+          <div className="sign-up-login-container">
+            <Login
+              onLogin={handleLogin}
+              notValid={handleNotValid}
+              isValid={invalidCredentials}
+              setToken={setToken}
+            />
+            <SignUp
+              onSignUp={handleSignUp}
+              notMatch={handleNotMatch}
+              isPasswordMatch={passwordMatch}
+              setToken={setToken}
+            />
+          </div>
+          <div className="example">
+            <p>Demo-example credentials</p>
+            <p>username: user1</p>
+            <p>password: password1</p>
+          </div>
         </div>
       </div>
     );
